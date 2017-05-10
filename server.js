@@ -1,9 +1,16 @@
 var express = require('express');
 var app = express();
 var  mongojs = require('mongojs');
-var db = mongojs('ContactsDB', ['ContactsDB']);
+var db = mongojs('mongodb://akash:Akash%401993@ds159670.mlab.com:59670/contactsdb', ['ContactsDB']);
 var bodyParser = require('body-parser');
 //-------------------------------------------------
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods",'POST, GET, PUT, DELETE, OPTIONS');
+  next();
+});
 
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
@@ -61,6 +68,6 @@ app.delete('/contactList/:id', function(req,res){
 		});
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
 console.log('Server running on port 3000.');
